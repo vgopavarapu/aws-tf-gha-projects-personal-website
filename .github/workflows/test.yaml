@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4 
+        uses: aws-actions/configure-aws-credentials@<SHA>
         with:
           aws-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
-        #run: echo "495935757188:This workflow is working."
+        
       - name: List S3 Buckets 
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
