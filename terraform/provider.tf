@@ -1,9 +1,8 @@
 provider "aws" {
-     
   
 }
 terraform {
-  backed "s3" { 
+  backend "s3" { 
     bucket = "tf-resource-gha"
     key    = "github-actions/terraform.tfstate"
     region = "us-east-1"
