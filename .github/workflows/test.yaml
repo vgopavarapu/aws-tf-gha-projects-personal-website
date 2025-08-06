@@ -1,4 +1,4 @@
-name: Listing S3 bucket
+name: Create S3 bucket
 
 on: 
   push:
@@ -11,23 +11,43 @@ permissions:
   contents: read
 
 jobs:
-  listing-s3-buckets:  
+  creating-s3-buckets:  
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
-          
+      
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      - name: List S3 buckets
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Initialize Terraform
         run: |
-          echo "Listing S3 buckets..."
-          aws s3 ls
-          echo "S3 buckets listed successfully."
+          terraform init
+          working-directory: terraform
+          echo "Terraform initialized successfully." 
+
+      - name: Plan Terraform
+        env:
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+        run: |
+          terraform plan -var="bucket_name=${BUCKET_NAME}"
+          working-directory: terraform
+          echo "Terraform Plan created successfully."   
+
+      - name: Apply Terraform 
+        env:
+          TF_VAR_BUCKET_NAME: ${{ secrets.BUCKET_NAME }} 
+        run: |
+          terraform apply -auto-approve
+          working-directory: terraform
+          echo "Terraform configuration applied successfully."
+
 
           
   
