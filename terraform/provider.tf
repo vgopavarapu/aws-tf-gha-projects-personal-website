@@ -6,7 +6,6 @@ terraform {
     bucket = "tf-resource-gha"
     key    = "github-actions/terraform.tfstate"
     region = "us-east-1"
-    encryption = true
     dynamodb_table = "tf.resource.gha.lock"
   }
 }
