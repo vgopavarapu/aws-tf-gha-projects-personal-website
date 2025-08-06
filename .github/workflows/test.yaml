@@ -35,6 +35,7 @@ jobs:
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
         run: |
           terraform plan \
+            terraform force-unlock 31550394-6253-ae11-d4e5-76d77970aa72 \ 
             -var="bucket_name=$BUCKET_NAME"
         working-directory: terraform
 
